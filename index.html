@@ -1,0 +1,47 @@
+<html>
+<script>
+        function play()
+    {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function()
+        {
+            if(this.readyState==4 && this.status == 200)
+            {
+                console.log(this);
+                myFunction(this);
+            }
+        };
+        xhttp.open("GET","playlist.xml",true);
+        xhttp.send();
+    }
+    function myFunction(xml)
+    {
+        var i;
+        var xmlDoc = xml.responseXML;
+        var table = "<table id = 'playlist'><tr><th>Song</th><th>Artist</th></tr>";
+        var x = xmlDoc.getElementsByTagName("song");
+        for(i=0;i<x.length;i++)
+        {
+            table+= "<tr><td>"+x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue+"</td><td>"+x[i].getElementsByTagName("artist")[0].childNodes[0].nodeValue;
+            
+        }
+    table+= "</table>";
+    document.getElementById("playlist").innerHTML = table;
+    
+    }
+   </script>
+   <style>   
+   table,th,td{
+       border: 1px solid black;
+   }
+   table{
+       margin-top: 20px;
+   }   
+   </style>
+    <body>
+      
+    <h1>Ajax</h1>  
+    <button id = "getPlaylist" onclick = "play()">Get Playlist</button>
+    <div id = "playlist"></div>
+    </body>
+    </html>
